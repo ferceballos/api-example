@@ -1,0 +1,46 @@
+import React, { useEffect, useState } from "react";
+import logo from "./logo.svg";
+import "./App.css";
+import { Container, Typography, Card, CardContent } from "@material-ui/core";
+
+function App() {
+  //variable de estado donde guardaremos la respuesta de la api
+  const [data, setData] = useState([]);
+
+  //efecto que se ejecuta una vez, cuando la página está lista
+  useEffect(() => {
+    fetchAPI();
+  }, []);
+
+  const fetchAPI = () => {
+    fetch("http://138.68.5.53:8080/api/client", {
+      headers: new Headers({
+        Authorization:
+          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqb3VvIiwiZXhwIjoxNTgxNTA3MjU4LCJpYXQiOjE1ODE0MjA4NTh9.QROKqmpE52kI8wN4FNvsutdk11GjcG8a6LFvZB4kT30"
+      }),
+      mode: "no-cors"
+    })
+      .then(response => response.json())
+      .then(data => setData(data))
+      .catch(error => console.log(error));
+  };
+
+  return (
+    <Container style={{ paddingTop: 64 }}>
+      {data.map((value, index) => {
+        console.log(value);
+        return (
+          <Card>
+            <CardContent>
+              <Typography vairant="h5" color="colorPrimary">
+                {value.nombre}
+              </Typography>
+            </CardContent>
+          </Card>
+        );
+      })}
+    </Container>
+  );
+}
+
+export default App;
